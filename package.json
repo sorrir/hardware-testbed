@@ -1,0 +1,17 @@
+{
+  "name": "mvp-simple-testbed",
+  "version": "0.1.0",
+  "description": "",
+  "main": "app.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc && node dist/app.js",
+    "build-framework": "cd ../mvp && npm install && npm run-script build"
+  },
+  "dependencies": {
+    "tslint": "^6.1.0",
+    "typescript": "^3.8.3",
+    "@types/node": "^12.12.34",
+    "sorrir-framework": "^0.3.4"
+  }
+}

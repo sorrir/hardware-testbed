@@ -1,0 +1,79 @@
+# config file for esphome, see https://esphome.io/
+
+esphome:
+  name: receiver
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+  ssid: "TODO"
+  password: "TODO"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Receiver Fallback Hotspot"
+    password: "TODO"
+
+
+captive_portal:
+
+globals:
+  - id: free_parking_spaces
+    type: int
+    restore_value: no
+    initial_value: '0'
+
+display:
+  platform: tm1637
+  id: tm1637_display
+  clk_pin: D5
+  dio_pin: D6
+  lambda: |-
+    it.printf("%i", id(free_parking_spaces));
+
+mqtt:
+  broker: 192.168.178.32
+  username: TODO
+  password: TODO
+  port: 1883
+  discovery: False
+  client_id: sorrir-receiver
+  on_message:
+    - topic: sorrir/signal-update/LED_GREEN
+      payload: "1"
+      then:
+        switch.turn_on: LED_GREEN
+    - topic: sorrir/signal-update/LED_GREEN
+      payload: "0"
+      then:
+        switch.turn_off: LED_GREEN
+    - topic: sorrir/signal-update/LED_RED
+      payload: "1"
+      then:
+        switch.turn_on: LED_RED
+    - topic: sorrir/signal-update/LED_RED
+      payload: "0"
+      then:
+        switch.turn_off: LED_RED
+    - topic: sorrir/signal-update/DISPLAY
+      then:
+        lambda: |-
+          id(free_parking_spaces) = atoi( x.c_str() );
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+#api:
+
+ota:
+
+switch:
+  - platform: gpio
+    name: "LED_GREEN"
+    id: "LED_GREEN"
+    pin: D1
+  - platform: gpio
+    name: "LED_RED"
+    id: "LED_RED"
+    pin: D2

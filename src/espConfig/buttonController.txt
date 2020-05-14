@@ -1,0 +1,7 @@
+on button_up#Pressed=1 do
+   Publish,sorrir/button-pressed,'{"type":"BUTTON_UP_PRESSED", "port":"TO_BARRIER_CONTROLLER"}'
+endon
+
+on button_down#Pressed=1 do
+   Publish,sorrir/button-pressed,'{"type":"BUTTON_DOWN_PRESSED", "port":"TO_BARRIER_CONTROLLER"}'
+endon
